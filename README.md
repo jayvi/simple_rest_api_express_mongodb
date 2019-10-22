@@ -1,1 +1,15 @@
-# simple_rest_api_express_mongodb
+# Simple REST API Express & MongoDB
+
+
+### Installing
+
+Clone or download the repo 
+
+```
+npm install
+```
+Then 
+```
+npm run dev
+```
+
