@@ -6,7 +6,7 @@ POST http://localhost:3090/subscribers/
 Content-Type: application/json
 
 {
-    "name" : "Some Name",
+    "name" : "Joha Name",
     "subscribedToChannel" : "Cannel1"
 }
 

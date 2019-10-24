@@ -1,6 +1,64 @@
 const express = require('express')
 const router = express.Router();
 const Subscriber = require('../models/subscribers');
+const jwt = require('jsonwebtoken');
+//testing jwt
+
+router.get('/api', async (req, res)=>{
+   res.json({
+       message:' Welcome to API'
+   });
+});
+router.post('/api/posts',verifyToken, async (req, res)=>{
+    try{
+        jwt.verify(req.token,'mysupersecretkey',(err,authData)=>{
+            if(err){
+                res.sendStatus(403);
+            }
+            res.json({
+                message:' Post Created',
+                authData
+            });
+        });
+    }catch(error){
+        res.status(400).json({message: error.message});
+    }
+   
+    
+ });
+ //Format of Token : Authorization : Bearer <access_token> 
+ //verifyToken
+ function verifyToken(req,res,next){
+    //get auth header
+    const bearerHeader = req.headers['authorization'];
+    //check header exists
+    if(typeof bearerHeader !== 'undefined'){
+        //split the token with space
+        const bearer = bearerHeader.split(' ');
+        //get token from array
+        const bearerToken = bearer[1];
+        //set token
+        req.token = bearerToken;
+        //next middlewhere
+        next();
+    }else{
+        res.status(403).json({message:'Forbidden'});
+    }
+ }
+router.post('/api/login',(req,res)=>{
+    //create mock user
+    const user = {
+        id : 1,
+        username: 'demo',
+        email : 'demo@gmail.com'
+    }
+    jwt.sign({user},'mysupersecretkey',{ expiresIn: '30s' },(err,token)=>{
+        res.json({
+            token
+        });
+    });
+})
+
 //get all
 router.get('/', async (req, res)=>{
     try {
